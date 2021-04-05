@@ -13,6 +13,7 @@ import java.util.concurrent.Executors
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
 import kotlinx.android.synthetic.main.activity_camara.*
+import kotlinx.android.synthetic.main.activity_main.*
 import java.io.File
 import java.nio.ByteBuffer
 import java.text.SimpleDateFormat

@@ -14,11 +14,10 @@ class Video : AppCompatActivity() {
         val mediaController = MediaController(this)
         mediaController.setAnchorView(videoView1)
 
-        val onLineUri = Uri.parse("https://dl8.webmfiles.org/big-buck-bunny_trailer.webm")
-        val offLineUri = Uri.parse("android.resorce://$packageName/${R.raw.m1}")
+        val onlineURL = Uri.parse("https://dl8.webmfiles.org/big-buck-bunny_trailer.webm")
 
         videoView1.setMediaController(mediaController)
-        videoView1.setVideoURI(onLineUri)
+        videoView1.setVideoURI(onlineURL)
         videoView1.requestFocus()
         videoView1.start()
     }

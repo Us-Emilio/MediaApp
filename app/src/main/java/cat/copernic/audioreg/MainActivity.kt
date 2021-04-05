@@ -11,16 +11,21 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.view.LayoutInflater
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import cat.copernic.audioreg.databinding.ActivityMainBinding
+import com.google.android.material.navigation.NavigationView
 import kotlinx.android.synthetic.main.activity_main.*
 import java.io.IOException
 
-class MainActivity : AppCompatActivity() {
-
+class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var drawerLayout: DrawerLayout
     private var output: String? = null
     private var mediaRecorder: MediaRecorder? = null
     private var state: Boolean = false
@@ -29,6 +34,20 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        // Menu lateral
+        drawerLayout = drawer_layout
+        val toggle = ActionBarDrawerToggle(
+            this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close
+        )
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
+
+        val navView: NavigationView = nav_view
+        navView.setNavigationItemSelectedListener(this)
 
         mediaRecorder = MediaRecorder()
         output = Environment.getExternalStorageDirectory().absolutePath + "/recording.mp3"
@@ -57,10 +76,6 @@ class MainActivity : AppCompatActivity() {
 
         button_pause_recording.setOnClickListener {
             pauseRecording()
-        }
-        btnCamara.setOnClickListener {
-            val toCamera = Intent(this,  Camara::class.java)
-            startActivity(toCamera)
         }
     }
 
@@ -109,5 +124,29 @@ class MainActivity : AppCompatActivity() {
         }else{
             Toast.makeText(this, "You are not recording right now!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    override fun onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START)
+        } else {
+            super.onBackPressed()
+        }
+    }
+
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+
+        when (item.itemId) {
+            R.id.camara -> {
+                val toCamera = Intent(this,  Camara::class.java)
+                startActivity(toCamera)
+            }
+            R.id.video -> {
+                val toVideo = Intent(this,  Video::class.java)
+                startActivity(toVideo)
+            }
+        }
+
+        return true
     }
 }
