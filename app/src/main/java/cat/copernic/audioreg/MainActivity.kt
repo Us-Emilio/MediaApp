@@ -49,8 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
         val navView: NavigationView = nav_view
         navView.setNavigationItemSelectedListener(this)
 
-        mediaRecorder = MediaRecorder()
-        output = Environment.getExternalStorageDirectory().absolutePath + "/recording.mp3"
+
 
         button_start_recording.setOnClickListener {
             if (ContextCompat.checkSelfPermission(this,
@@ -59,19 +58,12 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
                 val permissions = arrayOf(android.Manifest.permission.RECORD_AUDIO, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)
                 ActivityCompat.requestPermissions(this, permissions,0)
             } else {
-
-
-                mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
-                mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
-                mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
-                mediaRecorder?.setOutputFile(output)
                 startRecording()
             }
         }
 
         button_stop_recording.setOnClickListener{
             stopRecording()
-            finish()
         }
 
         button_pause_recording.setOnClickListener {
@@ -80,6 +72,14 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
     }
 
     private fun startRecording() {
+
+        mediaRecorder = MediaRecorder()
+        output = Environment.getExternalStorageDirectory().absolutePath + "/recording.mp3"
+        mediaRecorder?.setAudioSource(MediaRecorder.AudioSource.MIC)
+        mediaRecorder?.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4)
+        mediaRecorder?.setAudioEncoder(MediaRecorder.AudioEncoder.AAC)
+        mediaRecorder?.setOutputFile(output)
+
         try {
             mediaRecorder?.prepare()
             mediaRecorder?.start()
